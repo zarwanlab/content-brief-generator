@@ -16,7 +16,7 @@ A professional, minimal, and modern single-page application built with Laravel a
 - **PHP**: >= 8.2
 - **Composer**: Latest version
 - **Web Server**: Apache, Nginx, or use built-in PHP server (Artisan)
-- **Database**: Optional (currently configured to use `file` driver for sessions and cache for simplicity)
+- **Database**: Not required. The application works entirely without a database by using the `file` driver for sessions and cache.
 
 ## 🛠️ Installation
 

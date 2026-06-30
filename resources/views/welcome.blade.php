@@ -7,8 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         body {
@@ -37,6 +35,33 @@
         .step-card:hover {
             transform: translateY(-5px);
             transition: all 0.3s ease;
+        }
+        /* Custom Tooltip */
+        [data-tooltip] {
+            position: relative;
+        }
+        [data-tooltip]:before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-5px);
+            padding: 5px 10px;
+            background: #0f172a;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 60;
+        }
+        [data-tooltip]:hover:before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-10px);
         }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #F8FAFC; }
@@ -83,7 +108,6 @@
                         <a href="{{ route('lang.switch', 'ar') }}" class="block px-4 py-2 text-xs font-bold hover:bg-slate-50 {{ app()->getLocale() == 'ar' ? 'text-blue-600' : '' }}">{{ __('messages.lang_ar') }}</a>
                     </div>
                 </div>
-                <span class="hidden md:inline-flex text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">v1.0.0</span>
             </div>
         </div>
     </nav>
@@ -153,11 +177,18 @@
                     </div>
                 </div>
 
-                <button type="submit" id="submitBtn"
-                    class="w-full py-5 bg-gradient-to-r from-[#0D47A1] to-[#00BCD4] text-white rounded-2xl font-black text-lg shadow-xl shadow-blue-200 hover:shadow-2xl hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3">
-                    <span>{{ __('messages.btn_generate') }}</span>
-                    <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
-                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button type="submit" id="submitBtn"
+                        class="w-full py-5 bg-gradient-to-r from-[#0D47A1] to-[#00BCD4] text-white rounded-2xl font-black text-lg shadow-xl shadow-blue-200 hover:shadow-2xl hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3">
+                        <span>{{ __('messages.btn_generate') }}</span>
+                        <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
+                    </button>
+                    <button type="button" onclick="loadExample()"
+                        class="w-full py-5 bg-white text-[#0D47A1] border-2 border-[#0D47A1]/20 rounded-2xl font-black text-lg hover:bg-slate-50 hover:border-[#0D47A1]/40 transition-all flex items-center justify-center gap-3">
+                        <span>{{ __('messages.btn_try_example') }}</span>
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </button>
+                </div>
             </form>
         </section>
 
@@ -203,13 +234,9 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
                 <h3 class="text-2xl font-black text-slate-900">{{ __('messages.results_title') }}</h3>
                 <div class="flex gap-2">
-                    <button id="copyBtn" class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all flex items-center gap-2">
+                    <button id="copyBtn" data-tooltip="{{ __('messages.btn_copy') }}" class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all flex items-center gap-2">
                         <i class="fa-regular fa-copy text-[#0D47A1]"></i>
                         {{ __('messages.btn_copy') }}
-                    </button>
-                    <button id="downloadPdfBtn" class="px-4 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-file-pdf text-rose-500"></i>
-                        {{ __('messages.btn_download_pdf') }}
                     </button>
                 </div>
             </div>
@@ -257,7 +284,7 @@
 
                 <!-- LSI & FAQ -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
                         <h4 class="font-black text-slate-900 mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-key text-amber-500"></i>
                             {{ __('messages.out_lsi') }}
@@ -266,7 +293,7 @@
                             <!-- Keywords -->
                         </div>
                     </div>
-                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
                         <h4 class="font-black text-slate-900 mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-circle-question text-[#00BCD4]"></i>
                             {{ __('messages.out_faq') }}
@@ -276,15 +303,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="bg-gradient-to-br from-[#0D47A1] to-[#00BCD4] p-8 rounded-[2.5rem] text-center text-white shadow-2xl shadow-blue-200 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-16 -mt-16"></div>
-                <h4 class="text-xl font-black mb-2">{{ __('messages.ready_to_write') }}</h4>
-                <p class="text-blue-50 mb-6 font-medium">{{ __('messages.ready_to_write_desc') }}</p>
-                <button onclick="window.print()" class="px-8 py-4 bg-white text-[#0D47A1] rounded-2xl font-black shadow-lg hover:bg-blue-50 transition-all">
-                    {{ __('messages.btn_download_brief') }}
-                </button>
             </div>
         </div>
     </main>
@@ -321,6 +339,13 @@
             loadingState.classList.remove('hidden');
             resultsArea.classList.add('hidden');
             recentBriefsSection.classList.add('hidden');
+
+            // Smooth scroll to loading state with offset
+            setTimeout(() => {
+                const yOffset = -150; // Stop 150px above the element
+                const y = loadingState.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 100);
 
             try {
                 const response = await fetch('{{ route("brief.generate") }}', {
@@ -376,10 +401,9 @@
 
             recents.forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer group';
-                div.onclick = () => renderResults(item.data, item.keyword);
+                div.className = 'bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer group relative';
                 div.innerHTML = `
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between" onclick="renderResults(${JSON.stringify(item.data).replace(/"/g, '&quot;')}, '${item.keyword}')">
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-xs">
                                 <i class="fa-solid fa-file-lines"></i>
@@ -391,16 +415,61 @@
                         </div>
                         <i class="fa-solid fa-chevron-{{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left' : 'right' }} text-[10px] text-slate-300 group-hover:translate-x-{{ in_array(app()->getLocale(), ['fa', 'ar']) ? '-2' : '2' }} transition-transform"></i>
                     </div>
+                    <button onclick="deleteRecentItem(event, ${item.id})" class="absolute top-2 {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left-2' : 'right-2' }} w-6 h-6 bg-rose-50 text-rose-500 rounded-full opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center hover:bg-rose-500 hover:text-white" title="{{ __('messages.delete_item') }}">
+                        <i class="fa-solid fa-times text-[10px]"></i>
+                    </button>
                 `;
                 recentBriefsList.appendChild(div);
             });
         }
 
+        function deleteRecentItem(e, id) {
+            e.stopPropagation();
+            let recents = JSON.parse(localStorage.getItem('recent_briefs') || '[]');
+            recents = recents.filter(r => r.id !== id);
+            localStorage.setItem('recent_briefs', JSON.stringify(recents));
+            renderRecentBriefs();
+            showToast('{{ __("messages.delete_item") }}');
+        }
+
         function clearRecentBriefs() {
-            if (confirm('Are you sure you want to clear your history?')) {
+            if (confirm('{{ __("messages.confirm_delete_history") }}')) {
                 localStorage.removeItem('recent_briefs');
                 renderRecentBriefs();
             }
+        }
+
+        function loadExample() {
+            const exampleData = {
+                keyword: 'SEO for Beginners',
+                language: 'en',
+                data: {
+                    h1_title: 'Complete SEO Guide for Beginners: Step-by-Step Roadmap 2026',
+                    meta_description: 'Master the basics of SEO with our comprehensive beginner guide. Learn keyword research, on-page optimization, and technical SEO strategies to rank higher.',
+                    structure: [
+                        { heading: 'Introduction to Search Engine Optimization', description: 'Explain what SEO is, how search engines work, and why it matters for business growth in 2026.' },
+                        { heading: 'Keyword Research: The Foundation of SEO', description: 'Step-by-step process for finding high-volume, low-competition keywords using modern tools.' },
+                        { heading: 'On-Page SEO Best Practices', description: 'Covering title tags, meta descriptions, header tags, and content optimization for search intent.' },
+                        { heading: 'Technical SEO Essentials', description: 'Briefly discuss site speed, mobile-friendliness, and indexing basics for new sites.' },
+                        { heading: 'Link Building and Off-Page Authority', description: 'Strategies for earning high-quality backlinks without spammy tactics.' }
+                    ],
+                    lsi_keywords: ['Search Intent', 'Organic Traffic', 'Backlink Profile', 'SERP Analysis', 'Crawler Bot', 'Canonical URL', 'Domain Authority'],
+                    faq: [
+                        { question: 'How long does it take to see results from SEO?', answer: 'Typically, it takes 3 to 6 months to see significant results, depending on competition and strategy consistency.' },
+                        { question: 'Is SEO still relevant in the age of AI?', answer: 'Absolutely. AI search (SGE) relies on high-quality, authoritative content that follows SEO principles.' }
+                    ]
+                }
+            };
+
+            // Fill form
+            document.querySelector('input[name="keyword"]').value = exampleData.keyword;
+            document.querySelector('textarea[name="description"]').value = 'This is a sample brief to demonstrate the output format.';
+            
+            // Scroll to results
+            saveToRecent(exampleData.data, exampleData.keyword);
+            renderResults(exampleData.data, exampleData.keyword);
+            showToast('{{ __("messages.btn_try_example") }}');
+            renderRecentBriefs();
         }
 
         function renderResults(data, keyword) {
@@ -447,22 +516,96 @@
             });
 
             // Scroll to results
-            resultsArea.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                const yOffset = -100; // Stop 100px above the results
+                const y = resultsArea.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 100);
         }
 
         // Copy Feature
         document.getElementById('copyBtn').addEventListener('click', () => {
-            const content = document.getElementById('briefContent').innerText;
-            navigator.clipboard.writeText(content).then(() => {
-                showToast('{{ __("messages.copy_success") }}');
+            const h1 = document.getElementById('outH1').innerText;
+            const target = document.getElementById('outTarget').innerText;
+            const meta = document.getElementById('outMeta').innerText;
+            
+            let structure = "";
+            document.querySelectorAll('#outStructure > div').forEach(div => {
+                const heading = div.querySelector('h5').innerText;
+                const desc = div.querySelector('p').innerText;
+                structure += `- ${heading}\n  ${desc}\n\n`;
             });
+
+            let lsi = "";
+            document.querySelectorAll('#outLSI > span').forEach(span => {
+                lsi += `- ${span.innerText}\n`;
+            });
+
+            let faq = "";
+            document.querySelectorAll('#outFAQ > div').forEach(div => {
+                const q = div.querySelector('p:first-child').innerText;
+                const a = div.querySelector('p:last-child').innerText;
+                faq += `${q}\n${a}\n\n`;
+            });
+
+            const fullText = `
+${target}
+====================
+H1: ${h1}
+Meta Description: ${meta}
+
+Structure:
+--------------------
+${structure}
+
+LSI Keywords:
+--------------------
+${lsi}
+
+FAQ:
+--------------------
+${faq}
+            `.trim();
+
+            copyToClipboard(fullText);
         });
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('{{ __("messages.copy_success") }}');
+                }).catch(err => {
+                    console.error('Clipboard error:', err);
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast('{{ __("messages.copy_success") }}');
+                }
+            } catch (err) {
+                console.error('Fallback copy error:', err);
+            }
+            document.body.removeChild(textArea);
+        }
 
         function copyElementText(id) {
             const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('{{ __("messages.copy_success") }}');
-            });
+            copyToClipboard(text);
         }
 
         function showToast(message) {
@@ -477,11 +620,6 @@
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
-
-        // PDF Download (Using window.print for simplicity and better RTL support, but providing a hook)
-        document.getElementById('downloadPdfBtn').addEventListener('click', () => {
-            window.print();
-        });
     </script>
 </body>
 </html>
