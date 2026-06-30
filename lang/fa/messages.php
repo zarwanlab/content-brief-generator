@@ -31,4 +31,7 @@ return [
     'lang_fa' => 'فارسی',
     'lang_en' => 'English',
     'lang_ar' => 'العربية',
+    'recent_briefs' => 'بریف‌های اخیر',
+    'no_recent' => 'هنوز بریفی تولید نشده است.',
+    'clear_history' => 'پاکسازی تاریخچه',
 ];

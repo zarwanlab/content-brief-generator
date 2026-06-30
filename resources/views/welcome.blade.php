@@ -27,6 +27,13 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .step-card:hover {
             transform: translateY(-5px);
             transition: all 0.3s ease;
@@ -154,17 +161,45 @@
             </form>
         </section>
 
-        <div id="loadingState" class="hidden mb-12 text-center space-y-4 py-10">
-            <div class="inline-flex relative">
-                <div class="w-16 h-16 border-4 border-blue-100 border-t-[#0D47A1] rounded-full animate-spin"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <i class="fa-solid fa-robot text-[#0D47A1] animate-bounce"></i>
-                </div>
+        <!-- Recent Briefs Section -->
+        <section id="recentBriefsSection" class="hidden mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-blue-600"></i>
+                    {{ __('messages.recent_briefs') }}
+                </h3>
+                <button onclick="clearRecentBriefs()" class="text-xs font-bold text-rose-500 hover:text-rose-700 transition-colors">
+                    {{ __('messages.clear_history') }}
+                </button>
             </div>
-            <p class="text-slate-500 font-bold animate-pulse">{{ __('messages.loading_text') }}</p>
+            <div id="recentBriefsList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Recent items injected here -->
+            </div>
+        </section>
+
+        <div id="loadingState" class="hidden mb-12 space-y-8 py-10">
+            <div class="text-center space-y-4 mb-8">
+                <div class="inline-flex relative">
+                    <div class="w-16 h-16 border-4 border-blue-100 border-t-[#0D47A1] rounded-full animate-spin"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fa-solid fa-robot text-[#0D47A1] animate-bounce"></i>
+                    </div>
+                </div>
+                <p class="text-slate-500 font-bold animate-pulse">{{ __('messages.loading_text') }}</p>
+            </div>
+            
+            <!-- Skeleton Screen -->
+            <div class="space-y-6 opacity-40">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 h-32 bg-slate-200 rounded-[2rem] animate-pulse"></div>
+                    <div class="h-32 bg-slate-200 rounded-[2rem] animate-pulse"></div>
+                </div>
+                <div class="h-24 bg-slate-200 rounded-[2rem] animate-pulse"></div>
+                <div class="h-64 bg-slate-200 rounded-[2.5rem] animate-pulse"></div>
+            </div>
         </div>
 
-        <div id="resultsArea" class="hidden space-y-8">
+        <div id="resultsArea" class="hidden space-y-8 animate-fade-in">
             <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
                 <h3 class="text-2xl font-black text-slate-900">{{ __('messages.results_title') }}</h3>
                 <div class="flex gap-2">
@@ -182,9 +217,12 @@
             <div id="briefContent" class="space-y-8">
                 <!-- H1 & Meta -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                    <div class="md:col-span-2 bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative group">
                         <label class="text-[10px] font-black text-[#0D47A1] uppercase mb-2 block">{{ __('messages.out_h1') }}</label>
                         <h1 id="outH1" class="text-2xl font-black text-slate-900"></h1>
+                        <button onclick="copyElementText('outH1')" class="absolute top-4 {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left-4' : 'right-4' }} opacity-0 group-hover:opacity-100 transition-all text-slate-400 hover:text-[#0D47A1]">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
                     </div>
                     <div class="bg-[#0D47A1] text-white p-6 rounded-[2rem] shadow-xl shadow-blue-200">
                         <label class="text-[10px] font-black text-blue-100 uppercase mb-2 block">{{ __('messages.out_target') }}</label>
@@ -192,16 +230,25 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative group">
                     <label class="text-[10px] font-black text-[#0D47A1] uppercase mb-2 block">{{ __('messages.out_meta') }}</label>
                     <p id="outMeta" class="text-slate-600 leading-relaxed font-medium"></p>
+                    <button onclick="copyElementText('outMeta')" class="absolute top-4 {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left-4' : 'right-4' }} opacity-0 group-hover:opacity-100 transition-all text-slate-400 hover:text-[#0D47A1]">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
                 </div>
 
                 <!-- Structure -->
                 <div class="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm">
                     <div class="bg-slate-50 px-8 py-5 border-b border-slate-100 flex items-center justify-between">
                         <span class="font-black text-slate-900">{{ __('messages.out_structure') }}</span>
-                        <i class="fa-solid fa-list-ul text-slate-400"></i>
+                        <div class="flex items-center gap-4">
+                            <button onclick="copyElementText('outStructure')" class="text-xs font-bold text-slate-400 hover:text-[#0D47A1] flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i>
+                                {{ __('messages.btn_copy') }}
+                            </button>
+                            <i class="fa-solid fa-list-ul text-slate-400"></i>
+                        </div>
                     </div>
                     <div id="outStructure" class="p-8 space-y-6">
                         <!-- Headings will be injected here -->
@@ -253,6 +300,13 @@
         const submitBtn = document.getElementById('submitBtn');
         const loadingState = document.getElementById('loadingState');
         const resultsArea = document.getElementById('resultsArea');
+        const recentBriefsSection = document.getElementById('recentBriefsSection');
+        const recentBriefsList = document.getElementById('recentBriefsList');
+
+        // Load recent briefs on init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRecentBriefs();
+        });
 
         briefForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -266,6 +320,7 @@
             submitBtn.disabled = true;
             loadingState.classList.remove('hidden');
             resultsArea.classList.add('hidden');
+            recentBriefsSection.classList.add('hidden');
 
             try {
                 const response = await fetch('{{ route("brief.generate") }}', {
@@ -280,6 +335,7 @@
                 const result = await response.json();
 
                 if (response.ok) {
+                    saveToRecent(result, data.keyword);
                     renderResults(result, data.keyword);
                 } else {
                     alert('Error: ' + (result.error || 'Unknown error'));
@@ -291,8 +347,61 @@
                 briefForm.style.pointerEvents = 'all';
                 submitBtn.disabled = false;
                 loadingState.classList.add('hidden');
+                renderRecentBriefs();
             }
         });
+
+        function saveToRecent(brief, keyword) {
+            let recents = JSON.parse(localStorage.getItem('recent_briefs') || '[]');
+            const newEntry = {
+                id: Date.now(),
+                keyword: keyword,
+                data: brief,
+                date: new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+            };
+            // Keep only last 6
+            recents = [newEntry, ...recents.filter(r => r.keyword !== keyword)].slice(0, 6);
+            localStorage.setItem('recent_briefs', JSON.stringify(recents));
+        }
+
+        function renderRecentBriefs() {
+            const recents = JSON.parse(localStorage.getItem('recent_briefs') || '[]');
+            if (recents.length === 0) {
+                recentBriefsSection.classList.add('hidden');
+                return;
+            }
+
+            recentBriefsSection.classList.remove('hidden');
+            recentBriefsList.innerHTML = '';
+
+            recents.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer group';
+                div.onclick = () => renderResults(item.data, item.keyword);
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors">${item.keyword}</h4>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">${item.date}</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-{{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left' : 'right' }} text-[10px] text-slate-300 group-hover:translate-x-{{ in_array(app()->getLocale(), ['fa', 'ar']) ? '-2' : '2' }} transition-transform"></i>
+                    </div>
+                `;
+                recentBriefsList.appendChild(div);
+            });
+        }
+
+        function clearRecentBriefs() {
+            if (confirm('Are you sure you want to clear your history?')) {
+                localStorage.removeItem('recent_briefs');
+                renderRecentBriefs();
+            }
+        }
 
         function renderResults(data, keyword) {
             resultsArea.classList.remove('hidden');
@@ -345,9 +454,29 @@
         document.getElementById('copyBtn').addEventListener('click', () => {
             const content = document.getElementById('briefContent').innerText;
             navigator.clipboard.writeText(content).then(() => {
-                alert('{{ __("messages.copy_success") }}');
+                showToast('{{ __("messages.copy_success") }}');
             });
         });
+
+        function copyElementText(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('{{ __("messages.copy_success") }}');
+            });
+        }
+
+        function showToast(message) {
+            // Simple toast notification
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 right-8 bg-slate-900 text-white px-6 py-4 rounded-3xl shadow-2xl z-[100] animate-fade-in flex items-center gap-3 border border-slate-800';
+            toast.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-400 text-lg"></i><span class="font-bold text-sm">${message}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
 
         // PDF Download (Using window.print for simplicity and better RTL support, but providing a hook)
         document.getElementById('downloadPdfBtn').addEventListener('click', () => {

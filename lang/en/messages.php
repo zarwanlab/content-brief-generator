@@ -32,4 +32,7 @@ return [
     'lang_fa' => 'فارسی',
     'lang_en' => 'English',
     'lang_ar' => 'العربية',
+    'recent_briefs' => 'Recent Briefs',
+    'no_recent' => 'No recent briefs yet.',
+    'clear_history' => 'Clear History',
 ];

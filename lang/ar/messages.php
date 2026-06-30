@@ -31,4 +31,7 @@ return [
     'lang_fa' => 'فارسی',
     'lang_en' => 'English',
     'lang_ar' => 'العربية',
+    'recent_briefs' => 'الموجزات الأخيرة',
+    'no_recent' => 'لا توجد موجزات أخيرة بعد.',
+    'clear_history' => 'مسح السجل',
 ];
