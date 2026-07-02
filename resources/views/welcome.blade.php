@@ -112,36 +112,36 @@
         </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-4 py-12">
-        <header class="text-center mb-12">
-            <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 leading-tight">
+    <main class="max-w-4xl mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-8 md:mb-12">
+            <h2 class="text-2xl md:text-5xl font-black text-slate-900 mb-4 leading-tight">
                 {!! __('messages.header_title') !!}
             </h2>
-            <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+            <p class="text-slate-500 text-base md:text-lg max-w-2xl mx-auto px-2">
                 {{ __('messages.header_desc') }}
             </p>
         </header>
 
-        <section class="bg-white rounded-[2.5rem] border border-slate-200 p-6 md:p-10 shadow-2xl shadow-blue-100/50 mb-12 relative overflow-hidden">
+        <section class="bg-white rounded-3xl md:rounded-[2.5rem] border border-slate-200 p-4 md:p-10 shadow-2xl shadow-blue-100/50 mb-10 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl -mr-32 -mt-32 opacity-50"></div>
             
-            <form id="briefForm" class="relative z-10 space-y-6">
+            <form id="briefForm" class="relative z-10 space-y-5 md:space-y-6">
                 @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                     <div class="space-y-2 md:col-span-2">
-                        <label class="text-sm font-black text-slate-700 mx-2">{{ __('messages.form_keyword') }}</label>
+                        <label class="text-xs md:text-sm font-black text-slate-700 mx-2">{{ __('messages.form_keyword') }}</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'right-4' : 'left-4' }} flex items-center text-slate-400">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </span>
                             <input type="text" name="keyword" required placeholder="{{ __('messages.form_keyword_placeholder') }}"
-                                class="w-full {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'pr-12 pl-4' : 'pl-12 pr-4' }} py-4 bg-[#F8FAFC] border-2 border-slate-100 rounded-2xl focus:border-[#0D47A1] focus:bg-white outline-none transition-all font-bold text-slate-900">
+                                class="w-full {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'pr-11 md:pr-12 pl-4' : 'pl-11 md:pl-12 pr-4' }} py-3.5 md:py-4 bg-[#F8FAFC] border-2 border-slate-100 rounded-xl md:rounded-2xl focus:border-[#0D47A1] focus:bg-white outline-none transition-all font-bold text-slate-900 text-sm md:text-base">
                         </div>
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-sm font-black text-slate-700 mx-2">{{ __('messages.form_language') }}</label>
-                        <select name="language" class="w-full px-4 py-4 bg-[#F8FAFC] border-2 border-slate-100 rounded-2xl focus:border-[#0D47A1] outline-none transition-all font-bold">
+                        <label class="text-xs md:text-sm font-black text-slate-700 mx-2">{{ __('messages.form_language') }}</label>
+                        <select name="language" class="w-full px-4 py-3.5 md:py-4 bg-[#F8FAFC] border-2 border-slate-100 rounded-xl md:rounded-2xl focus:border-[#0D47A1] outline-none transition-all font-bold text-sm md:text-base">
                             <option value="fa">فارسی (Persian) - IR</option>
                             <option value="en">انگلیسی (English) - US</option>
                             <option value="en-GB">English (United Kingdom) - UK</option>
@@ -165,127 +165,106 @@
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-sm font-black text-slate-700 mx-2">{{ __('messages.form_competitors') }}</label>
+                        <label class="text-xs md:text-sm font-black text-slate-700 mx-2">{{ __('messages.form_competitors') }}</label>
                         <input type="text" name="competitors" placeholder="{{ __('messages.form_competitors_placeholder') }}"
-                            class="w-full px-4 py-4 bg-[#F8FAFC] border-2 border-slate-100 rounded-2xl focus:border-[#0D47A1] outline-none transition-all font-bold">
+                            class="w-full px-4 py-3.5 md:py-4 bg-[#F8FAFC] border-2 border-slate-100 rounded-xl md:rounded-2xl focus:border-[#0D47A1] outline-none transition-all font-bold text-sm md:text-base">
                     </div>
 
                     <div class="space-y-2 md:col-span-2">
-                        <label class="text-sm font-black text-slate-700 mx-2">{{ __('messages.form_description') }}</label>
+                        <label class="text-xs md:text-sm font-black text-slate-700 mx-2">{{ __('messages.form_description') }}</label>
                         <textarea name="description" rows="3" placeholder="{{ __('messages.form_description_placeholder') }}"
-                            class="w-full px-4 py-4 bg-[#F8FAFC] border-2 border-slate-100 rounded-2xl focus:border-[#0D47A1] outline-none transition-all font-bold"></textarea>
+                            class="w-full px-4 py-3.5 md:py-4 bg-[#F8FAFC] border-2 border-slate-100 rounded-xl md:rounded-2xl focus:border-[#0D47A1] outline-none transition-all font-bold text-sm md:text-base"></textarea>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex justify-center">
                     <button type="submit" id="submitBtn"
-                        class="w-full py-5 bg-gradient-to-r from-[#0D47A1] to-[#00BCD4] text-white rounded-2xl font-black text-lg shadow-xl shadow-blue-200 hover:shadow-2xl hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3">
+                        class="w-full md:w-2/3 py-4 md:py-5 bg-gradient-to-r from-[#0D47A1] to-[#00BCD4] text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg shadow-xl shadow-blue-200 hover:shadow-2xl hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3">
                         <span>{{ __('messages.btn_generate') }}</span>
                         <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
-                    </button>
-                    <button type="button" onclick="loadExample()"
-                        class="w-full py-5 bg-white text-[#0D47A1] border-2 border-[#0D47A1]/20 rounded-2xl font-black text-lg hover:bg-slate-50 hover:border-[#0D47A1]/40 transition-all flex items-center justify-center gap-3">
-                        <span>{{ __('messages.btn_try_example') }}</span>
-                        <i class="fa-solid fa-lightbulb"></i>
                     </button>
                 </div>
             </form>
         </section>
 
-        <!-- Recent Briefs Section -->
-        <section id="recentBriefsSection" class="hidden mb-12">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-black text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left text-blue-600"></i>
-                    {{ __('messages.recent_briefs') }}
-                </h3>
-                <button onclick="clearRecentBriefs()" class="text-xs font-bold text-rose-500 hover:text-rose-700 transition-colors">
-                    {{ __('messages.clear_history') }}
-                </button>
-            </div>
-            <div id="recentBriefsList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <!-- Recent items injected here -->
-            </div>
-        </section>
-
-        <div id="loadingState" class="hidden mb-12 space-y-8 py-10">
+        <div id="loadingState" class="hidden mb-12 space-y-8 py-8 md:py-10">
             <div class="text-center space-y-4 mb-8">
                 <div class="inline-flex relative">
-                    <div class="w-16 h-16 border-4 border-blue-100 border-t-[#0D47A1] rounded-full animate-spin"></div>
+                    <div class="w-14 h-14 md:w-16 md:h-16 border-4 border-blue-100 border-t-[#0D47A1] rounded-full animate-spin"></div>
                     <div class="absolute inset-0 flex items-center justify-center">
-                        <i class="fa-solid fa-robot text-[#0D47A1] animate-bounce"></i>
+                        <i class="fa-solid fa-robot text-[#0D47A1] text-lg md:text-xl animate-bounce"></i>
                     </div>
                 </div>
-                <p class="text-slate-500 font-bold animate-pulse">{{ __('messages.loading_text') }}</p>
+                <p class="text-slate-500 font-bold text-sm md:text-base animate-pulse">{{ __('messages.loading_text') }}</p>
             </div>
             
             <!-- Skeleton Screen -->
-            <div class="space-y-6 opacity-40">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 h-32 bg-slate-200 rounded-[2rem] animate-pulse"></div>
-                    <div class="h-32 bg-slate-200 rounded-[2rem] animate-pulse"></div>
+            <div class="space-y-5 md:space-y-6 opacity-40">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+                    <div class="md:col-span-2 h-28 md:h-32 bg-slate-200 rounded-2xl md:rounded-[2rem] animate-pulse"></div>
+                    <div class="h-28 md:h-32 bg-slate-200 rounded-2xl md:rounded-[2rem] animate-pulse"></div>
                 </div>
-                <div class="h-24 bg-slate-200 rounded-[2rem] animate-pulse"></div>
-                <div class="h-64 bg-slate-200 rounded-[2.5rem] animate-pulse"></div>
+                <div class="h-20 md:h-24 bg-slate-200 rounded-2xl md:rounded-[2rem] animate-pulse"></div>
+                <div class="h-56 md:h-64 bg-slate-200 rounded-3xl md:rounded-[2.5rem] animate-pulse"></div>
             </div>
         </div>
 
-        <div id="resultsArea" class="hidden space-y-8 animate-fade-in">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-                <h3 class="text-2xl font-black text-slate-900">{{ __('messages.results_title') }}</h3>
-                <div class="flex gap-2">
-                    <button id="copyBtn" data-tooltip="{{ __('messages.btn_copy') }}" class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all flex items-center gap-2">
+        <div id="resultsArea" class="hidden space-y-6 md:space-y-8 animate-fade-in mb-12 md:mb-16">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-4 md:mb-6">
+                <h3 class="text-xl md:text-2xl font-black text-slate-900">{{ __('messages.results_title') }}</h3>
+                <div class="flex gap-2 w-full md:w-auto">
+                    <button id="copyBtn" data-tooltip="{{ __('messages.btn_copy') }}" class="flex-1 md:flex-none px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
                         <i class="fa-regular fa-copy text-[#0D47A1]"></i>
                         {{ __('messages.btn_copy') }}
                     </button>
                 </div>
             </div>
 
-            <div id="briefContent" class="space-y-8">
+            <div id="briefContent" class="space-y-6 md:space-y-8">
                 <!-- H1 & Meta -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative group">
-                        <label class="text-[10px] font-black text-[#0D47A1] uppercase mb-2 block">{{ __('messages.out_h1') }}</label>
-                        <h1 id="outH1" class="text-2xl font-black text-slate-900"></h1>
-                        <button onclick="copyElementText('outH1')" class="absolute top-4 {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left-4' : 'right-4' }} opacity-0 group-hover:opacity-100 transition-all text-slate-400 hover:text-[#0D47A1]">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+                    <div class="md:col-span-2 bg-white p-5 md:p-6 rounded-2xl md:rounded-[2rem] border border-slate-100 shadow-sm relative group">
+                        <label class="text-[9px] md:text-[10px] font-black text-[#0D47A1] uppercase mb-1 md:mb-2 block">{{ __('messages.out_h1') }}</label>
+                        <h1 id="outH1" class="text-xl md:text-2xl font-black text-slate-900 leading-tight"></h1>
+                        <button onclick="copyElementText('outH1')" class="absolute top-4 {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left-4' : 'right-4' }} opacity-0 md:group-hover:opacity-100 transition-all text-slate-400 hover:text-[#0D47A1]">
                             <i class="fa-regular fa-copy"></i>
                         </button>
                     </div>
-                    <div class="bg-[#0D47A1] text-white p-6 rounded-[2rem] shadow-xl shadow-blue-200">
-                        <label class="text-[10px] font-black text-blue-100 uppercase mb-2 block">{{ __('messages.out_target') }}</label>
-                        <div id="outTarget" class="text-xl font-black"></div>
+                    <div class="bg-[#0D47A1] text-white p-5 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl shadow-blue-200">
+                        <label class="text-[9px] md:text-[10px] font-black text-blue-100 uppercase mb-1 md:mb-2 block">{{ __('messages.out_target') }}</label>
+                        <div id="outTarget" class="text-lg md:text-xl font-black"></div>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative group">
-                    <label class="text-[10px] font-black text-[#0D47A1] uppercase mb-2 block">{{ __('messages.out_meta') }}</label>
-                    <p id="outMeta" class="text-slate-600 leading-relaxed font-medium"></p>
-                    <button onclick="copyElementText('outMeta')" class="absolute top-4 {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left-4' : 'right-4' }} opacity-0 group-hover:opacity-100 transition-all text-slate-400 hover:text-[#0D47A1]">
+                <div class="bg-white p-5 md:p-6 rounded-2xl md:rounded-[2rem] border border-slate-100 shadow-sm relative group">
+                    <label class="text-[9px] md:text-[10px] font-black text-[#0D47A1] uppercase mb-1 md:mb-2 block">{{ __('messages.out_meta') }}</label>
+                    <p id="outMeta" class="text-slate-600 leading-relaxed font-medium text-sm md:text-base"></p>
+                    <button onclick="copyElementText('outMeta')" class="absolute top-4 {{ in_array(app()->getLocale(), ['fa', 'ar']) ? 'left-4' : 'right-4' }} opacity-0 md:group-hover:opacity-100 transition-all text-slate-400 hover:text-[#0D47A1]">
                         <i class="fa-regular fa-copy"></i>
                     </button>
                 </div>
 
                 <!-- Structure -->
-                <div class="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm">
-                    <div class="bg-slate-50 px-8 py-5 border-b border-slate-100 flex items-center justify-between">
-                        <span class="font-black text-slate-900">{{ __('messages.out_structure') }}</span>
-                        <div class="flex items-center gap-4">
-                            <button onclick="copyElementText('outStructure')" class="text-xs font-bold text-slate-400 hover:text-[#0D47A1] flex items-center gap-1">
+                <div class="bg-white rounded-3xl md:rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm">
+                    <div class="bg-slate-50 px-5 md:px-8 py-4 md:py-5 border-b border-slate-100 flex items-center justify-between">
+                        <span class="font-black text-sm md:text-base text-slate-900">{{ __('messages.out_structure') }}</span>
+                        <div class="flex items-center gap-3 md:gap-4">
+                            <button onclick="copyElementText('outStructure')" class="text-[10px] md:text-xs font-bold text-slate-400 hover:text-[#0D47A1] flex items-center gap-1">
                                 <i class="fa-regular fa-copy"></i>
                                 {{ __('messages.btn_copy') }}
                             </button>
-                            <i class="fa-solid fa-list-ul text-slate-400"></i>
+                            <i class="fa-solid fa-list-ul text-slate-400 text-sm md:text-base"></i>
                         </div>
                     </div>
-                    <div id="outStructure" class="p-8 space-y-6">
+                    <div id="outStructure" class="p-5 md:p-8 space-y-5 md:space-y-6">
                         <!-- Headings will be injected here -->
                     </div>
                 </div>
 
                 <!-- LSI & FAQ -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
-                        <h4 class="font-black text-slate-900 mb-4 flex items-center gap-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <div class="bg-white p-5 md:p-6 rounded-3xl md:rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+                        <h4 class="font-black text-sm md:text-base text-slate-900 mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-key text-amber-500"></i>
                             {{ __('messages.out_lsi') }}
                         </h4>
@@ -293,8 +272,8 @@
                             <!-- Keywords -->
                         </div>
                     </div>
-                    <div class="bg-white p-6 rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
-                        <h4 class="font-black text-slate-900 mb-4 flex items-center gap-2">
+                    <div class="bg-white p-5 md:p-6 rounded-3xl md:rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+                        <h4 class="font-black text-sm md:text-base text-slate-900 mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-circle-question text-[#00BCD4]"></i>
                             {{ __('messages.out_faq') }}
                         </h4>
@@ -305,11 +284,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- Recent Briefs Section -->
+        <section id="recentBriefsSection" class="hidden mb-12">
+            <div class="flex items-center justify-between mb-5 md:mb-6 px-1">
+                <h3 class="text-lg md:text-xl font-black text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-blue-600"></i>
+                    {{ __('messages.recent_briefs') }}
+                </h3>
+                <button onclick="clearRecentBriefs()" class="text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-700 transition-colors">
+                    {{ __('messages.clear_history') }}
+                </button>
+            </div>
+            <div id="recentBriefsList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Recent items injected here -->
+            </div>
+        </section>
     </main>
 
     <footer class="bg-white border-t border-slate-100 py-12">
         <div class="max-w-6xl mx-auto px-4 text-center">
-            <p class="text-slate-400 text-sm font-medium">{{ __('messages.footer_made_with') }} <i class="fa-solid fa-heart text-rose-500 mx-1"></i> <a href="https://zarwan.co" target="_blank" class="text-[#0D47A1] font-black hover:text-[#00BCD4] transition-colors">زروان</a></p>
+            <p class="text-slate-400 text-sm font-medium">{{ __('messages.footer_made_with') }} <i class="fa-solid fa-heart text-rose-500 mx-1"></i> <a href="https://zarwan.co" target="_blank" class="text-[#0D47A1] font-black hover:text-[#00BCD4] transition-colors">Zarwan</a></p>
         </div>
     </footer>
 
@@ -439,39 +434,6 @@
             }
         }
 
-        function loadExample() {
-            const exampleData = {
-                keyword: 'SEO for Beginners',
-                language: 'en',
-                data: {
-                    h1_title: 'Complete SEO Guide for Beginners: Step-by-Step Roadmap 2026',
-                    meta_description: 'Master the basics of SEO with our comprehensive beginner guide. Learn keyword research, on-page optimization, and technical SEO strategies to rank higher.',
-                    structure: [
-                        { heading: 'Introduction to Search Engine Optimization', description: 'Explain what SEO is, how search engines work, and why it matters for business growth in 2026.' },
-                        { heading: 'Keyword Research: The Foundation of SEO', description: 'Step-by-step process for finding high-volume, low-competition keywords using modern tools.' },
-                        { heading: 'On-Page SEO Best Practices', description: 'Covering title tags, meta descriptions, header tags, and content optimization for search intent.' },
-                        { heading: 'Technical SEO Essentials', description: 'Briefly discuss site speed, mobile-friendliness, and indexing basics for new sites.' },
-                        { heading: 'Link Building and Off-Page Authority', description: 'Strategies for earning high-quality backlinks without spammy tactics.' }
-                    ],
-                    lsi_keywords: ['Search Intent', 'Organic Traffic', 'Backlink Profile', 'SERP Analysis', 'Crawler Bot', 'Canonical URL', 'Domain Authority'],
-                    faq: [
-                        { question: 'How long does it take to see results from SEO?', answer: 'Typically, it takes 3 to 6 months to see significant results, depending on competition and strategy consistency.' },
-                        { question: 'Is SEO still relevant in the age of AI?', answer: 'Absolutely. AI search (SGE) relies on high-quality, authoritative content that follows SEO principles.' }
-                    ]
-                }
-            };
-
-            // Fill form
-            document.querySelector('input[name="keyword"]').value = exampleData.keyword;
-            document.querySelector('textarea[name="description"]').value = 'This is a sample brief to demonstrate the output format.';
-            
-            // Scroll to results
-            saveToRecent(exampleData.data, exampleData.keyword);
-            renderResults(exampleData.data, exampleData.keyword);
-            showToast('{{ __("messages.btn_try_example") }}');
-            renderRecentBriefs();
-        }
-
         function renderResults(data, keyword) {
             resultsArea.classList.remove('hidden');
             
@@ -484,10 +446,13 @@
             structureContainer.innerHTML = '';
             data.structure.forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'border-r-4 border-blue-500 pr-4 py-2';
+                div.className = 'border-r-4 border-blue-500 pr-3 md:pr-4 py-1.5 md:py-2';
                 div.innerHTML = `
-                    <h5 class="font-black text-slate-900 mb-1">${item.heading}</h5>
-                    <p class="text-slate-500 text-sm font-medium leading-relaxed">${item.description}</p>
+                    <div class="flex items-center gap-2 mb-1">
+                        <h5 class="font-black text-slate-900 text-sm md:text-base">${item.heading}</h5>
+                        <span class="text-[9px] md:text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-md font-black border border-blue-100">${item.tag || 'H2'}</span>
+                    </div>
+                    <p class="text-slate-500 text-xs md:text-sm font-medium leading-relaxed">${item.description}</p>
                 `;
                 structureContainer.appendChild(div);
             });
@@ -507,10 +472,10 @@
             faqContainer.innerHTML = '';
             data.faq.forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'bg-slate-50 p-4 rounded-2xl';
+                div.className = 'bg-slate-50 p-4 rounded-xl md:rounded-2xl';
                 div.innerHTML = `
-                    <p class="font-black text-slate-900 text-sm mb-1">{{ in_array(app()->getLocale(), ['fa', 'ar']) ? '؟' : '?' }} ${item.question}</p>
-                    <p class="text-slate-600 text-xs leading-relaxed font-medium">${item.answer}</p>
+                    <p class="font-black text-slate-900 text-xs md:text-sm mb-1">{{ in_array(app()->getLocale(), ['fa', 'ar']) ? '؟' : '?' }} ${item.question}</p>
+                    <p class="text-slate-600 text-[11px] md:text-xs leading-relaxed font-medium">${item.answer}</p>
                 `;
                 faqContainer.appendChild(div);
             });
@@ -532,8 +497,9 @@
             let structure = "";
             document.querySelectorAll('#outStructure > div').forEach(div => {
                 const heading = div.querySelector('h5').innerText;
+                const tag = div.querySelector('span').innerText;
                 const desc = div.querySelector('p').innerText;
-                structure += `- ${heading}\n  ${desc}\n\n`;
+                structure += `- [${tag}] ${heading}\n  ${desc}\n\n`;
             });
 
             let lsi = "";

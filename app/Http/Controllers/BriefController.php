@@ -21,19 +21,31 @@ class BriefController extends Controller
         $description = $request->input('description');
         $competitors = $request->input('competitors');
 
-        $prompt = "You are a senior SEO strategist. Generate a comprehensive Content Brief in {$language} for the following keyword: \"{$keyword}\".
-        
-Context: {$description}
-Competitor URLs: {$competitors}
+        $prompt = "Act as a Senior SEO Expert and Content Strategist. Your task is to generate a detailed Content Brief for the keyword: \"{$keyword}\" in the language: {$language}.
 
-The output must be a structured JSON object with exactly these keys:
-- h1_title: A catchy, SEO-optimized H1 title.
-- meta_description: A compelling meta description (max 160 chars).
-- structure: An array of objects, each with 'heading' (H2/H3) and 'description' (what to cover in this section).
-- lsi_keywords: An array of 10-15 LSI keywords.
-- faq: An array of objects, each with 'question' and 'answer'.
+CONTEXT/INSTRUCTIONS:
+- Description: {$description}
+- Competitors: {$competitors}
+- Language: {$language}
 
-Format the response ONLY as valid JSON.";
+STRICT OUTPUT RULES:
+1. You MUST output ONLY a valid JSON object. 
+2. DO NOT include any conversational text like \"I am ChatGPT\" or \"Here is your brief\".
+3. DO NOT include markdown code blocks (```json).
+4. All content must be in {$language}.
+
+JSON STRUCTURE:
+{
+  \"h1_title\": \"(SEO optimized title)\",
+  \"meta_description\": \"(Max 160 chars)\",
+  \"structure\": [
+    { \"heading\": \"Section Title\", \"tag\": \"H2/H3/H4\", \"description\": \"Detailed instructions for this section\" }
+  ],
+  \"lsi_keywords\": [\"keyword1\", \"keyword2\", ...],
+  \"faq\": [
+    { \"question\": \"Question?\", \"answer\": \"Answer...\" }
+  ]
+}";
 
         try {
             $baseUrl = env('AI_BASE_URL', 'https://ai.barivan.workers.dev/v1');
@@ -43,32 +55,58 @@ Format the response ONLY as valid JSON.";
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $apiToken,
                 'Content-Type' => 'application/json',
-            ])->post($baseUrl . '/chat/completions', [
+                'Accept' => 'application/json',
+            ])
+            ->timeout(60)
+            ->connectTimeout(10)
+            ->retry(2, 200)
+            ->post($baseUrl . '/chat/completions', [
                 'model' => $model,
                 'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => "You are a professional Content Brief Generator. You always respond with pure JSON following the user's requested schema. No talking, no markdown, just JSON.",
+                    ],
                     [
                         'role' => 'user',
                         'content' => $prompt,
                     ],
                 ],
-                'temperature' => 0.7,
-                'max_tokens' => 2048,
+                'temperature' => 0.3, // Lower temperature for more consistent JSON
+                'max_tokens' => 2500,
                 'stream' => false,
             ]);
 
             if ($response->successful()) {
-                $content = $response->json('choices.0.message.content');
-                // Attempt to clean JSON if AI wraps it in markdown code blocks
-                if (preg_match('/```json\s*(.*?)\s*```/s', $content, $matches)) {
-                    $content = $matches[1];
+                $content = trim($response->json('choices.0.message.content'));
+                
+                // Robust JSON extraction
+                if (str_contains($content, '{')) {
+                    $start = strpos($content, '{');
+                    $end = strrpos($content, '}');
+                    if ($start !== false && $end !== false) {
+                        $content = substr($content, $start, $end - $start + 1);
+                    }
                 }
                 
-                return response()->json(json_decode($content, true));
+                $decoded = json_decode($content, true);
+                
+                if (json_last_error() !== JSON_ERROR_NONE || !isset($decoded['h1_title'])) {
+                    // Log the bad content for debugging if needed
+                    \Illuminate\Support\Facades\Log::error('AI Failed to provide JSON. Content: ' . $content);
+                    return response()->json(['error' => 'The AI failed to generate a proper brief. Please try again.'], 500);
+                }
+
+                return response()->json($decoded);
             }
 
-            return response()->json(['error' => 'API Error: ' . $response->body()], 500);
+            $errorData = $response->json();
+            $errorMessage = $errorData['error']['message'] ?? $response->body();
+            return response()->json(['error' => 'AI Service Error: ' . $errorMessage], $response->status());
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            return response()->json(['error' => 'Connection Timeout: The AI service took too long to respond.'], 504);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Server Error: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'System Error: ' . $e->getMessage()], 500);
         }
     }
 }
