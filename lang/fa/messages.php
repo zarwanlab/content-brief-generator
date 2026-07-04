@@ -22,7 +22,7 @@ return [
     'out_structure' => 'ساختار و هدینگ‌های پیشنهادی',
     'out_lsi' => 'LSI Keywords',
     'out_faq' => 'سوالات متداول (FAQ)',
-    'footer_made_with' => 'ساخته شده با قلب توسط',
+    'footer_made_with' => 'ساخته شده توسط',
     'copy_success' => 'بریف در حافظه کپی شد!',
     'lang_fa' => 'فارسی',
     'lang_en' => 'English',

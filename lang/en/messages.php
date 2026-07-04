@@ -22,7 +22,7 @@ return [
     'out_structure' => 'Proposed Structure & Headings',
     'out_lsi' => 'LSI Keywords',
     'out_faq' => 'Frequently Asked Questions (FAQ)',
-    'footer_made_with' => 'Made with heart by',
+    'footer_made_with' => 'Made by',
     'copy_success' => 'Brief copied to clipboard!',
     'lang_tr' => 'Türkçe',
     'lang_fa' => 'فارسی',

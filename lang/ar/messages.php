@@ -22,7 +22,7 @@ return [
     'out_structure' => 'الهيكل والعناوين المقترحة',
     'out_lsi' => 'LSI Keywords',
     'out_faq' => 'الأسئلة الشائعة (FAQ)',
-    'footer_made_with' => 'صنع بكل حب بواسطة',
+    'footer_made_with' => 'صنع بواسطة',
     'copy_success' => 'تم نسخ الموجز!',
     'lang_fa' => 'فارسی',
     'lang_en' => 'English',
