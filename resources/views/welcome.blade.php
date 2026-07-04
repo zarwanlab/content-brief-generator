@@ -164,11 +164,6 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="text-xs md:text-sm font-black text-slate-700 mx-2">{{ __('messages.form_competitors') }}</label>
-                        <input type="text" name="competitors" placeholder="{{ __('messages.form_competitors_placeholder') }}"
-                            class="w-full px-4 py-3.5 md:py-4 bg-[#F8FAFC] border-2 border-slate-100 rounded-xl md:rounded-2xl focus:border-[#0D47A1] outline-none transition-all font-bold text-sm md:text-base">
-                    </div>
 
                     <div class="space-y-2 md:col-span-2">
                         <label class="text-xs md:text-sm font-black text-slate-700 mx-2">{{ __('messages.form_description') }}</label>
