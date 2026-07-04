@@ -312,7 +312,9 @@
             submitBtn.disabled = true;
             loadingState.classList.remove('hidden');
             resultsArea.classList.add('hidden');
-            recentBriefsSection.classList.add('hidden');
+            if (recentBriefsSection) {
+                recentBriefsSection.classList.add('hidden');
+            }
 
             // Smooth scroll to loading state with offset
             setTimeout(() => {
@@ -364,6 +366,10 @@
         }
 
         function renderRecentBriefs() {
+            if (!recentBriefsSection || !recentBriefsList) {
+                return;
+            }
+
             const recents = JSON.parse(localStorage.getItem('recent_briefs') || '[]');
             if (recents.length === 0) {
                 recentBriefsSection.classList.add('hidden');
@@ -453,7 +459,7 @@
                 const div = document.createElement('div');
                 div.className = 'bg-slate-50 p-4 rounded-xl md:rounded-2xl';
                 div.innerHTML = `
-                    <p class="font-black text-slate-900 text-xs md:text-sm mb-1">{{ in_array(app()->getLocale(), ['fa', 'ar']) ? '؟' : '?' }} ${item.question}</p>
+                    <p class="font-black text-slate-900 text-xs md:text-sm mb-1">${item.question}</p>
                     <p class="text-slate-600 text-[11px] md:text-xs leading-relaxed font-medium">${item.answer}</p>
                 `;
                 faqContainer.appendChild(div);
