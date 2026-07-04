@@ -279,22 +279,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Recent Briefs Section -->
-        <section id="recentBriefsSection" class="hidden mb-12">
-            <div class="flex items-center justify-between mb-5 md:mb-6 px-1">
-                <h3 class="text-lg md:text-xl font-black text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left text-blue-600"></i>
-                    {{ __('messages.recent_briefs') }}
-                </h3>
-                <button onclick="clearRecentBriefs()" class="text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-700 transition-colors">
-                    {{ __('messages.clear_history') }}
-                </button>
-            </div>
-            <div id="recentBriefsList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <!-- Recent items injected here -->
-            </div>
-        </section>
     </main>
 
     <footer class="bg-white border-t border-slate-100 py-12">
