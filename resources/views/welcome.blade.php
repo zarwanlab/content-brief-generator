@@ -283,7 +283,7 @@
 
     <footer class="bg-white border-t border-slate-100 py-12">
         <div class="max-w-6xl mx-auto px-4 text-center">
-            <p class="text-slate-400 text-sm font-medium">{{ __('messages.footer_made_with') }} <i class="fa-solid fa-heart text-rose-500 mx-1"></i> <a href="https://zarwan.co" target="_blank" class="text-[#0D47A1] font-black hover:text-[#00BCD4] transition-colors">Zarwan</a></p>
+            <p class="text-slate-400 text-sm font-medium">{{ __('messages.footer_made_with') }} <i class="fa-solid fa-heart text-rose-500 mx-1"></i> <a href="https://barivan.com" target="_blank" class="text-[#0D47A1] font-black hover:text-[#00BCD4] transition-colors">barivan</a></p>
         </div>
     </footer>
 
